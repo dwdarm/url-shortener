@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<main class="section is-medium">
+    <div class="container">
+        <h1 class="title is-2 is-size-3-mobile has-text-centered">Link Shortener</h1>
+        <h3 class="subtitle is-5 is-size-6-mobile has-text-centered">Convert your URLs to be shorter and easier to read</h3>
+
+        <div class="mb-6"></div>
+
+        <form method="post">
+            <div style="max-width: 600px; margin: 0 auto;">
+
+                <div class="field has-addons has-addons-centered is-fullwidth mb-5">
+                    <div class="control is-expanded">
+                        <input name="url" class="input" required placeholder="Paste your URL">
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button is-link">
+                            Shorten
+                        </button>
+                    </div>
+                </div>
+
+                {% if data %}
+                <div class="notification is-info is-light">
+                    <p class="title is-5">
+                        <a id="short-link" style="text-decoration: none;" href="{{ data.base_domain }}/{{ data.link.slug }}" target="_blank">{{ data.base_domain }}/{{ data.link.slug }}</a>
+                    </p>
+                    <p class="subtitle is-6">{{ data.link.href }}</p>
+                    <p class="buttons">
+                        <a href="{{ data.base_domain }}/{{ data.link.slug }}" target="_blank" class="button">
+                            <span class="icon is-small">
+                                <i class="fas fa-share"></i>
+                            </span>
+                        </a>
+                        <button id="copy-btn" class="button">
+                            <span class="icon is-small">
+                                <i class="fas fa-copy"></i>
+                            </span>
+                        </button>
+                        <a href="{{ data.link.qr_code }}" download="qrcode.png" class="button">
+                            <span class="icon is-small">
+                                <i class="fas fa-qrcode"></i>
+                            </span>
+                        </a>
+                    </p>
+                </div>
+                {% endif %}
+
+            </div>
+            <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" />
+        </form>
+
+    </div>
+
+    <script>
+
+        var copyBtn = document.getElementById('copy-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                shortLink = document.getElementById('short-link');
+                if (shortLink) {
+                    navigator.clipboard.writeText(shortLink.href);
+                    alert('Link copied!');
+                }
+            })
+        }
+
+    </script>
+</main>
+{% endblock %}
