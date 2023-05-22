@@ -7,7 +7,7 @@ from app.domain.model.link_model import Link, LinkCreate
 
 class LinkRepository(LinkRepositoryInterface):
     
-    def __init__(self, db: MongoClient) -> None:
+    def __init__(self, db: MongoClient):
         self.col = db.link_short['link']
 
     def make_link(self, data) -> Link:
@@ -18,14 +18,14 @@ class LinkRepository(LinkRepositoryInterface):
             create_at=data['create_at']
         )
 
-    def find_by_slug(self, slug: str) -> Link | None:
+    def find_by_slug(self, slug: str):
         result = self.col.find_one({'slug': slug})
         if result == None:
             return None
         
         return self.make_link(result)
     
-    def create(self, data: LinkCreate) -> Link | None:
+    def create(self, data: LinkCreate):
         result = self.col.insert_one({
             **data.dict(),
             'create_at': datetime.datetime.utcnow(),
