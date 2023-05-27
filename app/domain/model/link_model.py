@@ -7,8 +7,3 @@ class Link(BaseModel):
     href: HttpUrl
     create_at: Any
     qr_code: Any
-
-class LinkCreate(BaseModel):
-    slug: str
-    href: HttpUrl
-    qr_code: Any

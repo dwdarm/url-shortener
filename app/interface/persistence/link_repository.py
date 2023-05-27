@@ -3,7 +3,7 @@ import datetime
 from pymongo import MongoClient
 
 from app.domain.repository.link_repository_interface import LinkRepositoryInterface
-from app.domain.model.link_model import Link, LinkCreate
+from app.domain.model.link_model import Link
 
 class LinkRepository(LinkRepositoryInterface):
     
@@ -25,7 +25,7 @@ class LinkRepository(LinkRepositoryInterface):
         
         return self.make_link(result)
     
-    def create(self, data: LinkCreate):
+    def create(self, data: Link):
         result = self.col.insert_one({
             **data.dict(),
             'create_at': datetime.datetime.utcnow(),

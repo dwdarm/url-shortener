@@ -1,7 +1,7 @@
 from secrets import token_urlsafe
 from slugify import slugify
 
-from app.domain.model.link_model import Link, LinkCreate
+from app.domain.model.link_model import Link
 from app.domain.repository.link_repository_interface import LinkRepositoryInterface
 from app.domain.service.link_service import LinkService
 
@@ -34,7 +34,7 @@ class LinkUsecase(LinkUsecaseInterface):
         else:
             ts = slugify(ts)
 
-        return self.repository.create(LinkCreate(
+        return self.repository.create(Link(
             slug=ts, 
             href=href, 
             qr_code=self.service.generate_qr_code(ts)
