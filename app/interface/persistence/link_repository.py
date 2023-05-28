@@ -7,8 +7,8 @@ from app.domain.model.link_model import Link
 
 class LinkRepository(LinkRepositoryInterface):
     
-    def __init__(self, db: MongoClient):
-        self.col = db.link_short['link']
+    def __init__(self, client: MongoClient, db: str):
+        self.col = client[db].link
 
     def make_link(self, data) -> Link:
         return Link(

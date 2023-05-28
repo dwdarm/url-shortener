@@ -4,7 +4,6 @@ from dependency_injector.wiring import inject, Provide
 
 from app.usecase.link_usecase import LinkUsecase
 from app.registry.container import Container
-from config.setting import BASE_DOMAIN
 
 @inject
 def get_link_by_slug_view(
@@ -17,7 +16,9 @@ def get_link_by_slug_view(
     
     return redirect(link.href, code=302)
 
+@inject
 def create_link_view(
+    base_domain: str = Provide[Container.config.base_domain],
     link_usecase: LinkUsecase = Provide[Container.link_usecase]
 ):
     if request.method == 'GET':
@@ -29,7 +30,7 @@ def create_link_view(
         )
 
         data = {
-            'base_domain': BASE_DOMAIN,
+            'base_domain': base_domain,
             'link': link
         }
 

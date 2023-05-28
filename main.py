@@ -4,15 +4,19 @@ from flask_wtf.csrf import CSRFProtect
 
 from app.registry.container import Container
 from app.interface.views import link_view
-from config.setting import SECRET_KEY
+from config.setting import *
 
 csrf = CSRFProtect()
 
 def create_app() -> Flask:
     container = Container()
+    container.config.secret_key.from_value(SECRET_KEY)
+    container.config.mongodb_uri.from_value(MONGODB_URI)
+    container.config.db_name.from_value(DB_NAME)
+    container.config.base_domain.from_value(BASE_DOMAIN)
 
     app = Flask(__name__)
-    app.secret_key = SECRET_KEY
+    app.secret_key = container.config.secret_key()
     csrf.init_app(app)
 
     app.container = container
